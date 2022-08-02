@@ -1,0 +1,7 @@
+mobilenet - train: 68.23% test: 57.22% loss: 57.28%
+mobilenet v2	- train: 68.62% test: 59.44% loss: 55.30%
+mobilenet v3 small - train: 50.49% test: 50% loss: 69.48%
+mobilenet v3 large - train: 50.49% test: 49.44% loss: 69.46 ! early stopped
+xception - train: 50% test: 53.33 loss: 65.42%
+
+* epoch = 5, batch_size = 1, weight = imagenet, with early stopping
