@@ -1,4 +1,4 @@
-from website import create_app # import the website package
+from website import create_app
 
 app = create_app()
 

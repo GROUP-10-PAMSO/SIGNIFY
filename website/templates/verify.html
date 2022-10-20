@@ -1,23 +1,35 @@
 {% extends "base.html" %}
 
+{% block title %} Verify Signature {% endblock %}
+
 {% block content%}
-<h1 class="text-center mb-md-3">Verify Your Signature</h1> <br>
-<form action="" method="POST" class="">
+<h1 class="text-center ">Verify Your Signature</h1> <br>
+<!-- <h5 class="text-center mb-md-3">Tip: Make your signature center to the image to have a more accurate predictions</h5> -->
+<form action="" method="POST" class="" enctype="multipart/form-data">
     <div class="container text-center">
         <div class="row">
-            <div class="col-md-6 d-flex flex-column">
+            <div class="col-md-12 d-flex flex-column">
                 <input type="file" name="picture1" id="picture1" class="form-control mb-3">
-                <img src="" alt="Picture 1">
+                {% if picture1 %}
+                <img src="../static/sign_storage/{{ picture1 }}" alt="Picture 1" id="preview1">
+                {% else %}
+                <img src="" alt="Picture 1" id="preview1">
+                {% endif %}
 
             </div>
-            <div class="col-md-6 d-flex flex-column">
+            <!-- <div class="col-md-6 d-flex flex-column">
                 <input type="file" name="picture2" id="picture2" class="form-control mb-3">
-                <img src="" alt="Picture 2">
-            </div>
+                {% if picture2 %}
+                <img src="../static/sign_storage/{{ picture2 }}" alt="Picture 2" id="preview2">
+                {% else %}
+                <img src="" alt="Picture 2" id="preview2">
+                {% endif %}
+
+            </div> -->
         </div> <br>
         <div class="row">
             <div class="col">
-                <button type="submit" class="btn btn-info">Compare</button>
+                <button type="submit" class="btn btn-info">Verify</button>
                 <a href="/" class="btn btn-info">Back</a>
             </div>
         </div>
@@ -30,5 +42,8 @@
     <p>Accuracy: <span style="color: green">{{ percent }}</span> </p>
 </div>
 {% endif %}
-
 {% endblock%}
+
+{% block script %}
+<script src="../static/js/verify.js"></script>
+{% endblock %}
