@@ -1,7 +1,6 @@
-from logging import PlaceHolder
 from keras.models import load_model
-from keras.utils.image_utils import img_to_array
-from PIL import Image
+from flask_login import UserMixin
+from . import db
 
 import numpy as np
 import cv2
@@ -15,7 +14,7 @@ class SignatureModel:
         self.result = ""
         self.percentage = ""
 
-        self.model = load_model('website/static/ver1_xception.h5')
+        self.model = load_model('website/static/ver1_mobilenetv2.h5')
 
     # Resizing the pictures
     def preprocess(self):
@@ -23,8 +22,6 @@ class SignatureModel:
         self.picture1 = cv2.cvtColor(self.picture1, cv2.COLOR_BGR2RGB)
         self.picture1 = cv2.resize(self.picture1, (SIZE, SIZE))
         self.picture1 = np.expand_dims(self.picture1, axis=0)
-
-        # cv2.imwrite('website/static/sign_storage/test-preprocessed.jpg' , image)
 
         # data2 = cv2.imread(self.picture2, cv2.COLOR_BGR2RGB)
         # data2 = cv2.cvtColor(data2, cv2.COLOR_BGR2RGB)
@@ -42,5 +39,9 @@ class SignatureModel:
     def output(self):
         return self.result, self.percentage
 
-class User:
-    pass
+class UserDatabase(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150))
+    email = db.Column(db.String(150), unique=True)
+    countPictures = db.Column(db.Integer)
+    password = db.Column(db.String(150))

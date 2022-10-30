@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} Account Details {% endblock %}
+
+{% if user.is_authenticated %} {% block content %}
+<div class="container">
+    <h1 class="mb-4 text-center">Account Details</h1>
+
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <iconify-icon inline icon="bi:info-circle-fill"></iconify-icon>
+        <span class="m-0"> Welcome to the Account page! </span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="row text-start">
+        <div class="col-sm-2">Name:</div>
+        <div class="col-sm-10">{{ user.username}}</div>
+    </div>
+    
+    <div class="row text-start">
+        <div class="col-sm-2">Email:</div>
+        <div class="col-sm-10"> {{ user.email }}</div>
+    </div>
+
+    <div class="row text-start">
+        <div class="col-sm-2">No. of Pictures</div>
+        <div class="col-sm-10"> {{ user.countPictures }}</div>
+    </div>
+
+    <hr>
+
+    <!-- Just for future references / development and may subjective for changes soon -->
+    <div class="row text-center">
+        <input type="file" name="picture" id="picture" class="form-control">
+    </div>
+
+    <div class="row text-center border border-1">
+        
+    </div>
+</div>
+{% endblock %} {% endif %}
