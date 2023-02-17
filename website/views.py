@@ -4,7 +4,6 @@ from requests import Session
 from sqlalchemy import select, engine
 
 from . import db
-from .models import UserDatabase
 
 views = Blueprint('views', __name__)
 

@@ -1,0 +1,8 @@
+{
+    "convert_from": "SiameseModel.pt",
+    "convert_to": "KerasSiameseModel.h5",
+    "network_script":"",
+    "network_name":"",
+    "input_shape":"105,105"
+
+}

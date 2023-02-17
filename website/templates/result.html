@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %} Result {% endblock %}
+
+{% block css %} 
+<link rel="stylesheet" href="../static/css/result.css">
+{% endblock %}
+
+{% block content%}
+<h1 class="text-center">Results</h1>
+<div class="container text-center">
+    <div class="row">
+        <div class="col-md-6 d-flex flex-column">
+            <img src="../static/sign_storage/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
+        </div>
+        <div class="col-md-6 d-flex flex-column">
+            <img src="../static/sign_storage/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
+        </div>
+    </div> <br>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 text-start p-0">Genuine</div>
+        <div class="col-sm-6 text-end p-0">Forged</div>
+    </div>
+    
+    <div class="row progress-bar-container">
+        <div class="red-gradient"></div>
+    </div>
+
+    <div class="row text-center mt-3">
+        <p class="m-0">Prediction: {{ verdict }}</p>
+        <p class="m-0">Confidence: {{ percent }}%</p>
+    </div>
+
+    {% if not confirmed %}
+    <div class="row text-center mt-3">
+        <div class="col">
+            <h3>Is this true?</h3>
+            <form action="" method="POST" class="" enctype="multipart/form-data">
+                <div class="col">
+                    <button type="submit" name="confirmation" value="0" class="btn btn-success">Yes</a>
+                    <button type="submit" name="confirmation" value="1" class="btn btn-danger">No</a>
+                    <button type="submit" name="confirmation" value="2" class="btn btn-dark">Not sure</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="row text-center mt-3">
+        <div class="col">
+            <h3>Thank you for the response!</h3>
+            <a href="/verify" class="btn btn-info">Verify Again</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="container mt-5 border border-success">
+    <div class="row text-center pb-2">
+        <h1>About the Model</h1>
+    </div>
+    <div class="row text-center">
+        <div class="col-sm-6">
+            <h2>{{ signCount }}</h2>
+            <p>Signatures Verified</p>
+        </div>
+        <div class="col-sm-6">
+            <h2>{{ meanAccuracy }}%</h2>
+            <p>Accuracy</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(".red-gradient").attr("style", "width:{{percent}}%" )
+</script>
+{% endblock %}

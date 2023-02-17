@@ -20,7 +20,7 @@ def create_app():
 	app.register_blueprint(views, url_prefix='/')
 	app.register_blueprint(auth, url_prefix='/')
 
-	from .models import UserDatabase
+	from .database import UserDatabase
 	
 	# Creates an external database
 	create_database(app)
@@ -38,6 +38,5 @@ def create_app():
 def create_database(app):
 	# Checks if the database is created already. If not, create a new one.
 	if not path.exists('instance/' + DB_NAME):
-		print(" * Created")
 		with app.app_context():
 			db.create_all()

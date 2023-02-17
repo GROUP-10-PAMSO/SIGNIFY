@@ -8,24 +8,14 @@
 <form action="" method="POST" class="" enctype="multipart/form-data">
     <div class="container text-center">
         <div class="row">
-            <div class="col-md-12 d-flex flex-column">
+            <div class="col-md-6 d-flex flex-column">
                 <input type="file" name="picture1" id="picture1" class="form-control mb-3">
-                {% if picture1 %}
-                <img src="../static/sign_storage/{{ picture1 }}" alt="Picture 1" id="preview1">
-                {% else %}
-                <img src="" alt="Picture 1" id="preview1">
-                {% endif %}
-
+                <img src="" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
             </div>
-            <!-- <div class="col-md-6 d-flex flex-column">
+            <div class="col-md-6 d-flex flex-column">
                 <input type="file" name="picture2" id="picture2" class="form-control mb-3">
-                {% if picture2 %}
-                <img src="../static/sign_storage/{{ picture2 }}" alt="Picture 2" id="preview2">
-                {% else %}
-                <img src="" alt="Picture 2" id="preview2">
-                {% endif %}
-
-            </div> -->
+                <img src="" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px;">
+            </div>
         </div> <br>
         <div class="row">
             <div class="col">
@@ -36,12 +26,21 @@
     </div>
 </form>
 
-{% if result and percent: %}
-<div class="container text-center mt-md-4 mt-3 border border-danger">
-    <p>Status: <span style="color: red">{{ result }}</span> </p>
-    <p>Accuracy: <span style="color: green">{{ percent }}</span> </p>
+<div class="container mt-5 border border-success">
+    <div class="row text-center pb-2">
+        <h1>About the Model</h1>
+    </div>
+    <div class="row text-center">
+        <div class="col-sm-6">
+            <h2>{{ signCount }}</h2>
+            <p>Signatures Verified</p>
+        </div>
+        <div class="col-sm-6">
+            <h2>{{ meanAccuracy }}%</h2>
+            <p>Accuracy</p>
+        </div>
+    </div>
 </div>
-{% endif %}
 {% endblock%}
 
 {% block script %}
