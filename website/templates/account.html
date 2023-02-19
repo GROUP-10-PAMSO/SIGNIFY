@@ -11,31 +11,128 @@
         <span class="m-0"> Welcome to the Account page! </span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-
-    <div class="row text-start">
-        <div class="col-sm-2">Name:</div>
-        <div class="col-sm-10">{{ user.username}}</div>
-    </div>
     
-    <div class="row text-start">
-        <div class="col-sm-2">Email:</div>
-        <div class="col-sm-10"> {{ user.email }}</div>
-    </div>
-
-    <div class="row text-start">
-        <div class="col-sm-2">No. of Pictures</div>
-        <div class="col-sm-10"> {{ user.countPictures }}</div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row text-start">
+                <div class="col-sm-3">Name:</div>
+                <div class="col-sm-9">{{ user.username}}</div>
+            </div>
+            
+            <div class="row text-start">
+                <div class="col-sm-3">Email:</div>
+                <div class="col-sm-9"> {{ user.email }}</div>
+            </div>
+        
+            <div class="row text-start">
+                <div class="col-sm-3">No. of Pictures</div>
+                <div class="col-sm-9"> {{ user.countPictures }}</div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row text-start">
+                Signature:
+            </div>
+            <div class="row">
+                <img src="../static/sign_storage/{{ user.signature }}" id="currentUserSignature" alt="User's Signature">
+            </div> 
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signatureModal">
+                        Change Signature
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <hr>
 
     <!-- Just for future references / development and may subjective for changes soon -->
     <div class="row text-center">
-        <input type="file" name="picture" id="picture" class="form-control">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verifyModal">
+            Verify using your Signature
+        </button>
     </div>
 
-    <div class="row text-center border border-1">
-        
+    <div class="row text-end mt-3">
+        <div class="col align-content-end">
+            <select class="form-select form-select-sm" id="signatureCategory">
+                <option value="0" selected>Other Signature</option>
+                <option value="1">Your Signature</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row" id="signatureTable">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope=""col>#</th>
+                    <th scope=""col>Picture 1</th>
+                    <th scope=""col>Picture 2</th>
+                    <th scope=""col>Percentage</th>
+                    <th scope=""col>Is True?</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="signatureModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Signature</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="file" name="picture" id="userUploadSignature" class="form-control">
+                <img src="" alt="Insert your picture here." id="userSignature" width="inherit" style="max-height: 200px; max-width: 450px;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="saveUserSignature" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="verifyModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Verify Signature</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            Your Signature:
+                            <img src="../static/sign_storage/{{ user.signature }}" alt="User's Signature" style="max-height: inherit; max-width: inherit;">
+                        </div>
+                        <div class="col-sm-6">
+                            Uploaded Signature:
+                            <img src="" alt="Insert your picture here." id="verifySignatureImage" style="max-height: inherit; max-width: inherit;">
+                        </div>
+                    </div>
+                    <div class="row mt-sm-3">
+                        <input type="file" name="picture" id="verifySignatureInput" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="verifySignature" class="btn btn-success">Verify</button>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %} {% endif %}
+
+{% block script %}
+<script src="../static/js/account.js"></script>
+{% endblock %}

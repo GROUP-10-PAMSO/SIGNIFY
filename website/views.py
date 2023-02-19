@@ -15,7 +15,3 @@ def home():
 @views.route('/aboutus')
 def aboutus():
     return render_template("aboutus.html", user=current_user)
-
-@views.route('/account')
-def account():
-    return render_template("account.html", user=current_user)

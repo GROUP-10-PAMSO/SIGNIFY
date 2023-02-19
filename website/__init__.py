@@ -7,6 +7,7 @@ db = SQLAlchemy()
 DB_NAME = "database.db"
 
 UPLOAD_FOLDER = 'website/static/sign_storage/'
+ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jfif', '.PNG']
 
 def create_app():
 	app = Flask(__name__) #initializes the app
@@ -16,9 +17,11 @@ def create_app():
 
 	from .views import views
 	from .auth import auth
+	from .details import details
 
 	app.register_blueprint(views, url_prefix='/')
 	app.register_blueprint(auth, url_prefix='/')
+	app.register_blueprint(details, url_prefix='/')
 
 	from .database import UserDatabase
 	

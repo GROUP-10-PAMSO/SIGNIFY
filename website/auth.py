@@ -4,13 +4,11 @@ from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import db, UPLOAD_FOLDER
+from . import db, UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from .models import SignatureModel
 from .database import UserDatabase, SignDatabase
 
 import os, pathlib
-
-ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jfif', '.PNG']
 
 auth = Blueprint('auth', __name__)
 
@@ -19,7 +17,12 @@ def verify():
     if request.method == 'POST':
         picture1 = request.files['picture1']
         picture2 = request.files['picture2']
-
+        # toScanner = request.form.get('toScanner')
+        
+        # if toScanner:
+        #     # Apply Scanner filter for the pictures
+        #     pass
+        
         # Get the file extensions of each pictures
         ext_picture1 = pathlib.Path(picture1.filename).suffix
         ext_picture2 = pathlib.Path(picture2.filename).suffix
@@ -52,11 +55,14 @@ def verify():
             verdict = output[0]
             percent = round(output[1][0] * 100, 2)
 
-            return redirect(url_for('auth.result', verdict=verdict, percent=percent, picture1=picture1_sec, picture2=picture2_sec))
+            return redirect(url_for('auth.result', verdict=verdict, percent=percent, picture1=picture1_sec, picture2=picture2_sec, isUserSignature=False))
 
     signCount = db.session.query(SignDatabase).count()
     meanAccuracy = db.session.query(db.func.avg(db.cast(SignDatabase.accurate, db.Integer))).filter(SignDatabase.accurate != None).scalar()
-    meanAccuracy = round(meanAccuracy * 100, 2)
+    if meanAccuracy:
+        meanAccuracy = round(meanAccuracy * 100, 2)
+    else:
+        meanAccuracy = 0
 
     if current_user.is_anonymous:
         return redirect(url_for('auth.login'))
@@ -70,18 +76,26 @@ def result():
             # Will send to SignDatabase if the signature detected is accurate
             # Disregards the "not sure" data but it would still count on the number of signatures verified
             confirmation = int(request.form['confirmation'])
+            isUserSignature = (request.args.get('isUserSignature') == 'true')
+            percentage = request.args.get('percent')
+            picture1 = request.args.get('picture1')
+            picture2 = request.args.get('picture2')
+
             if confirmation == 0: # Yes
-                signVerified = SignDatabase(user_id=current_user.id, percentage=request.args.get('percent'), accurate=True)
+                signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=True, isUserSignature=isUserSignature)
             elif confirmation == 1: # No
-                signVerified = SignDatabase(user_id=current_user.id, percentage=request.args.get('percent'), accurate=False)
+                signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=False, isUserSignature=isUserSignature)
             elif confirmation == 2: # Not Sure
-                signVerified = SignDatabase(user_id=current_user.id, percentage=request.args.get('percent'))
+                signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, isUserSignature=isUserSignature)
             db.session.add(signVerified)
             db.session.commit()
 
             signCount = db.session.query(SignDatabase).count()
             meanAccuracy = db.session.query(db.func.avg(db.cast(SignDatabase.accurate, db.Integer))).filter(SignDatabase.accurate != None).scalar()
-            meanAccuracy = round(meanAccuracy * 100, 2)
+            if meanAccuracy:
+                meanAccuracy = round(meanAccuracy * 100, 2)
+            else:
+                meanAccuracy = 0
             return render_template("result.html", user=current_user, 
                 verdict=request.args.get('verdict'), percent=request.args.get('percent'),
                 picture1=request.args.get('picture1'),
@@ -90,7 +104,10 @@ def result():
 
     signCount = db.session.query(SignDatabase).count()
     meanAccuracy = db.session.query(db.func.avg(db.cast(SignDatabase.accurate, db.Integer))).filter(SignDatabase.accurate != None).scalar()
-    meanAccuracy = round(meanAccuracy * 100, 2)
+    if meanAccuracy:
+        meanAccuracy = round(meanAccuracy * 100, 2)
+    else:
+        meanAccuracy = 0
     return render_template("result.html", user=current_user, 
         verdict=request.args.get('verdict'), percent=request.args.get('percent'),
         picture1=request.args.get('picture1'),
@@ -109,7 +126,6 @@ def login():
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
             else:
-                print ("Went here 1")
                 flash("Wrong email or password", category='error')
         else:
             flash("Wrong email or password", category='error')

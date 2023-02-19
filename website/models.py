@@ -1,7 +1,6 @@
 import numpy as np
 import cv2
 
-from keras.models import load_model
 from keras.layers import Lambda
 from keras import layers
 from keras import Input
