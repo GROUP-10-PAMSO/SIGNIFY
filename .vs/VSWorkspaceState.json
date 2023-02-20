@@ -4,9 +4,8 @@
     "\\website",
     "\\website\\static",
     "\\website\\static\\css",
-    "\\website\\templates",
-    "\\__pycache__"
+    "\\website\\templates"
   ],
-  "SelectedNode": "\\website\\templates\\index.html",
+  "SelectedNode": "\\website\\templates\\verify.html",
   "PreviewInSolutionExplorer": false
 }
