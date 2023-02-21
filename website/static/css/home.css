@@ -148,7 +148,7 @@
     object-fit: cover;
   }
   .home-text07 {
-    top: 2000;
+    top: 1600;
     left: 500px;
     right: 500px;
     bottom: 234px;
@@ -167,7 +167,7 @@
   }
   .home-text08 {
     top: 700px;
-    left: 800;
+    left: 1000px;
     position: absolute;
     font-size: 23px;
     font-family: Poppins;
