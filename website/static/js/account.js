@@ -15,6 +15,7 @@ $(document).ready(function () {
                 row += '<td>' + data[i][1] + '</td>';
                 row += '<td>' + data[i][2] + '</td>';  
                 row += '<td>' + data[i][3] + '</td>'; 
+                row += '<td>' + data[i][4] + '</td>'; 
                 row += '</tr>';
                 $("#signatureTable tbody").append(row);
             }
@@ -45,6 +46,7 @@ $(document).ready(function () {
                     row += '<td>' + data[i][1] + '</td>';
                     row += '<td>' + data[i][2] + '</td>';  
                     row += '<td>' + data[i][3] + '</td>'; 
+                    row += '<td>' + data[i][4] + '</td>'; 
                     row += '</tr>';
                     $("#signatureTable tbody").append(row);
                 }

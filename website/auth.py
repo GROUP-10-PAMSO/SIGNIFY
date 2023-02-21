@@ -8,7 +8,7 @@ from . import db, UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from .models import SignatureModel
 from .database import UserDatabase, SignDatabase
 
-import os, pathlib
+import os, pathlib, shutil
 
 auth = Blueprint('auth', __name__)
 
@@ -38,16 +38,24 @@ def verify():
         elif picture1 and picture2: 
 
             # Outline for picture naming
-            # PictureNo_userID
+            # userID_PictureNo
 
             picture1_sec = secure_filename(picture1.filename)
             picture2_sec = secure_filename(picture2.filename)
 
             # Not yet secured!!
-            picture1.save(os.path.join(UPLOAD_FOLDER, picture1_sec))
-            picture2.save(os.path.join(UPLOAD_FOLDER, picture2_sec)) 
+            # Must be updated to detect if the directory is empty instead!!
+            if not os.path.exists(UPLOAD_FOLDER + f"{current_user.id}/not sure") or not os.path.exists(UPLOAD_FOLDER + f"{current_user.id}/real") or not os.path.exists(UPLOAD_FOLDER + f"{current_user.id}/forg"):
+                os.makedirs(UPLOAD_FOLDER + f"{current_user.id}/real")
+                os.makedirs(UPLOAD_FOLDER + f"{current_user.id}/forg")
+                os.makedirs(UPLOAD_FOLDER + f"{current_user.id}/not sure")
             
-            verify = SignatureModel(UPLOAD_FOLDER + picture1_sec, UPLOAD_FOLDER + picture2_sec)
+            user_folder = UPLOAD_FOLDER + f"{current_user.id}/not sure/"
+
+            picture1.save(os.path.join(user_folder, picture1_sec))
+            picture2.save(os.path.join(user_folder, picture2_sec))
+            
+            verify = SignatureModel(user_folder + picture1_sec, user_folder + picture2_sec)
             verify.preprocess()
             verify.predict()
             output = verify.output()
@@ -77,14 +85,28 @@ def result():
             # Disregards the "not sure" data but it would still count on the number of signatures verified
             confirmation = int(request.form['confirmation'])
             isUserSignature = (request.args.get('isUserSignature') == 'true')
-            percentage = request.args.get('percent')
+            percentage = float(request.args.get('percent'))
             picture1 = request.args.get('picture1')
             picture2 = request.args.get('picture2')
 
+            prediction = 0 if percentage <= 50 else 1
             if confirmation == 0: # Yes
                 signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=True, isUserSignature=isUserSignature)
+                if prediction == 0:
+                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture1}")
+                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
+                elif prediction == 1:
+                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture1}")
+                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
             elif confirmation == 1: # No
                 signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=False, isUserSignature=isUserSignature)
+                prediction = not prediction
+                if prediction == 0:
+                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture1}")
+                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
+                elif prediction == 1:
+                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture1}")
+                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
             elif confirmation == 2: # Not Sure
                 signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, isUserSignature=isUserSignature)
             db.session.add(signVerified)
