@@ -97,7 +97,7 @@ def result():
                     shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
                 elif prediction == 1:
                     shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture1}")
-                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
+                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture2}")
             elif confirmation == 1: # No
                 signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=False, isUserSignature=isUserSignature)
                 prediction = not prediction
@@ -106,7 +106,7 @@ def result():
                     shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
                 elif prediction == 1:
                     shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture1}")
-                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
+                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture2}")
             elif confirmation == 2: # Not Sure
                 signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, isUserSignature=isUserSignature)
             db.session.add(signVerified)
@@ -121,7 +121,7 @@ def result():
             return render_template("result.html", user=current_user, 
                 verdict=request.args.get('verdict'), percent=request.args.get('percent'),
                 picture1=request.args.get('picture1'),
-                picture2=request.args.get('picture2'), confirmed=True,
+                picture2=request.args.get('picture2'), confirmed=True, prediction=prediction,
                 signCount=signCount, meanAccuracy=meanAccuracy)
 
     signCount = db.session.query(SignDatabase).count()
@@ -133,7 +133,7 @@ def result():
     return render_template("result.html", user=current_user, 
         verdict=request.args.get('verdict'), percent=request.args.get('percent'),
         picture1=request.args.get('picture1'),
-        picture2=request.args.get('picture2'), confirmed=False, 
+        picture2=request.args.get('picture2'), confirmed=False, prediction=2,
         signCount=signCount, meanAccuracy=meanAccuracy)
 
 @auth.route('/login', methods=['GET', 'POST'])
