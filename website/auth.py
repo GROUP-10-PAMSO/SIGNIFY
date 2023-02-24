@@ -63,6 +63,10 @@ def verify():
             verdict = output[0]
             percent = round(output[1][0] * 100, 2)
 
+            counter = db.session.query(UserDatabase).filter(UserDatabase.id == current_user.id).first()
+            counter.countPictures += 1
+            db.session.commit()
+
             return redirect(url_for('auth.result', verdict=verdict, percent=percent, picture1=picture1_sec, picture2=picture2_sec, isUserSignature=False))
 
     signCount = db.session.query(SignDatabase).count()

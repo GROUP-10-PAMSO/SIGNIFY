@@ -6,7 +6,7 @@ from . import db, UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from .database import UserDatabase, SignDatabase
 from .models import SignatureModel
 
-import os, pathlib
+import os, pathlib, math
 
 details = Blueprint('details', __name__)
 
@@ -63,8 +63,14 @@ def verifySignature():
 @details.route('/signatureCategory', methods=['POST'])
 def signatureCategory():
     value = request.form.get('value')
-    
-    getSignatures = db.session.query(SignDatabase).filter(db.and_(SignDatabase.user_id == current_user.id, SignDatabase.isUserSignature == value)).all()
-    listSignatures = [(row.picture1, row.picture2, row.percentage, row.accurate) for row in getSignatures]
+    page = int(request.form.get('page'))
+    itemLimit = 5
+    start = (page - 1) * itemLimit
 
-    return jsonify(result=listSignatures)
+    totalRecords = db.session.query(SignDatabase).filter(db.and_(SignDatabase.user_id == current_user.id, SignDatabase.isUserSignature == value)).count()
+    totalPages = 1 if (totalRecords == 0) else math.ceil(totalRecords / itemLimit)
+
+    getSignatures = db.session.query(SignDatabase).filter(db.and_(SignDatabase.user_id == current_user.id, SignDatabase.isUserSignature == value)).offset(start).limit(itemLimit).all()
+    listSignatures = [(row.picture1, row.picture2, row.percentage, row.accurate, row.date) for row in getSignatures]
+
+    return jsonify(listSignatures=listSignatures, totalPages=totalPages, totalRecords=totalRecords, start=start)
