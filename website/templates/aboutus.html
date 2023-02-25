@@ -1,59 +1,47 @@
-<!DOCTYPE html>
-<html>
-    <div>
-        <link href="../static/css/aboutus.css" rel="stylesheet" />
-        <div class="aboutus-container">
-          <div class="aboutus-container1">
-            <h1 class="aboutus-text">
-              <span class="aboutus-text01">About Us</span>
-              <br />
-            </h1>
-            <span class="aboutus-text03">
-              Intellisiz is a start-up firm based in Manila, Philippines that
-              specializes in software development and machine learning. The company is
-              committed to providing high-quality software that exceeds the
-              expectations of its clients. They are also committed to transparency and
-              diversity, bringing leading AI researchers together in a constructive
-              and collaborative setting to tackle complex problems with significant
-              societal and economic implications.
-            </span>
-            <img
-              src="website/images/char3.png"
-              alt="image"
-              class="aboutus-image"
-            />
-          </div>
-          <div class="aboutus-container2">
-            <span class="aboutus-text04">
-              We offer our knowledge as a trusted AI partner in your path to transform
-              your organization into a data-driven AI organization to better deliver
-              information, products, and services in the current quickly evolving AI
-              and data science environment.
-            </span>
-            <span class="aboutus-text05">
-              <span>
-                We foresee a technologically embedded world in which everyone can make
-                the best decisions based on credible information and aided by the
-                power of Artificial Intelligence. We also focus on the enhancement of
-                knowledge, information, and interaction to agents and people in order
-                to improve performance in the current AI-driven era.
-              </span>
-              <br />
-              <span></span>
-            </span>
-            <span class="aboutus-text09">Mission</span>
-            <span class="aboutus-text10">Vision</span>
-            <span class="aboutus-text11">Our Team</span>
-            <img
-              src="website/images/char4.png"
-              alt="image"
-              class="aboutus-image1"
-            />
-            <span class="aboutus-text12">
-              Meet the people behind our magical product.
-            </span>
-          </div>
-        </div>
-      </div>
-      
-</html>
+{% extends "base.html" %}
+
+{% block title %} SIGNIFY {% endblock %}
+
+{% block css %}
+<link href="../static/css/aboutus.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid text-center">
+  <div class="aboutus-container container-fluid">
+    <div class="aboutus-container1 row">
+      <h1 class="aboutus-text01">ABOUT US</h1>
+      <h6 class="aboutus-text02">Intellisiz is a start-up firm based in Manila, Philippines that
+        specializes in software development and machine learning. The company is
+        committed to providing high-quality software that exceeds the
+        expectations of its clients. They are also committed to transparency and
+        diversity, bringing leading AI researchers together in a constructive
+        and collaborative setting to tackle complex problems with significant
+        societal and economic implications.</h6>
+    </div>
+    <div class="aboutus-container1 row">
+      <img src="../static/images/char3.png" alt="workers" class="aboutus-image">
+    </div>
+    <div class="aboutus-container1 row">
+      <h1 class="aboutus-text01">Mission</h1>
+      <h6 class="aboutus-text02">We offer our knowledge as a trusted AI partner in your path to transform
+        your organization into a data-driven AI organization to better deliver
+        information, products, and services in the current quickly evolving AI
+        and data science environment.</h6>
+    </div>
+    <div class="aboutus-container1 row">
+      <h1 class="aboutus-text01">Vission</h1>
+      <h6 class="aboutus-text02"> We foresee a technologically embedded world in which everyone can make
+        the best decisions based on credible information and aided by the
+        power of Artificial Intelligence. We also focus on the enhancement of
+        knowledge, information, and interaction to agents and people in order
+        to improve performance in the current AI-driven era.</h6>
+    </div>
+    <div class="aboutus-container1 row">
+      <img src="../static/images/char4.png" alt="workers" class="aboutus-image1">
+    </div>
+    
+  </div>
+</div>
+
+{% endblock %}
