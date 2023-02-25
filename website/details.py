@@ -65,7 +65,13 @@ def verifySignature():
         verdict = output[0]
         percent = round(output[1][0] * 100, 2)
 
-        return jsonify({'redirect': url_for('output.result', verdict=verdict, percent=percent, picture1=picture1, picture2=picture2, isUserSignature=True)})
+        signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percent, isUserSignature=True)
+        db.session.add(signVerified)
+        db.session.commit()
+
+        signID = db.session.query(SignDatabase.id).order_by(SignDatabase.id.desc()).first()[0]
+
+        return jsonify({'redirect': url_for('output.result', signID=signID, verdict=verdict, percent=percent, picture1=picture1, picture2=picture2, isUserSignature=True)})
 
 
 @details.route('/signatureCategory', methods=['POST'])
@@ -79,10 +85,23 @@ def signatureCategory():
     totalPages = 1 if (totalRecords == 0) else math.ceil(totalRecords / itemLimit)
 
     getSignatures = db.session.query(SignDatabase).filter(db.and_(SignDatabase.user_id == current_user.id, SignDatabase.isUserSignature == value)).offset(start).limit(itemLimit).all()
-    listSignatures = [(row.picture1, row.picture2, row.percentage, row.accurate, row.date) for row in getSignatures]
+    listSignatures = [(row.id, row.picture1, row.picture2, row.percentage, row.accurate, row.date) for row in getSignatures]
 
     return jsonify(listSignatures=listSignatures, totalPages=totalPages, totalRecords=totalRecords, start=start)
 
-@details.route('/moreDetails', methods=['GET', 'POST'])
+@details.route('/moreDetails', methods=['POST'])
 def moreDetails():
-    pass
+    signID = request.form.get('signID')
+
+    getRecord = SignDatabase.query.get_or_404(signID)
+
+    boolPercentage = True if getRecord.percentage <= 50 else False
+    print(boolPercentage)
+    print(int(boolPercentage))
+    prediction = int(boolPercentage if getRecord.accurate else ((not boolPercentage) if getRecord.accurate != None else 2))
+    print(prediction)
+    confirmed = True if prediction != 2 else False
+    
+    verdict = "Genuine" if (getRecord.percentage <= 0.5) else "Forged"
+
+    return jsonify({'redirect': url_for('output.result', verdict=verdict, percent=getRecord.percentage, picture1=getRecord.picture1, picture2=getRecord.picture2, isUserSignature=getRecord.isUserSignature, confirmed=confirmed, prediction=prediction, signID=signID)})

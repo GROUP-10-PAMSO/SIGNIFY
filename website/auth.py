@@ -67,7 +67,13 @@ def verify():
             counter.countPictures += 1
             db.session.commit()
 
-            return redirect(url_for('output.result', verdict=verdict, percent=percent, picture1=picture1_sec, picture2=picture2_sec, isUserSignature=False))
+            signVerified = SignDatabase(user_id=current_user.id, picture1=picture1_sec, picture2=picture2_sec, percentage=percent, isUserSignature=False)
+            db.session.add(signVerified)
+            db.session.commit()
+
+            signID = db.session.query(SignDatabase.id).order_by(SignDatabase.id.desc()).first()[0]
+
+            return redirect(url_for('output.result', signID=signID, verdict=verdict, percent=percent, picture1=picture1_sec, picture2=picture2_sec, isUserSignature=False))
 
     signCount = db.session.query(SignDatabase).count()
     meanAccuracy = db.session.query(db.func.avg(db.cast(SignDatabase.accurate, db.Integer))).filter(SignDatabase.accurate != None).scalar()

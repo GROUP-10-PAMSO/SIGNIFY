@@ -10,7 +10,7 @@ class UserDatabase(db.Model, UserMixin):
     password = db.Column(db.String(150), nullable=False)
     countPictures = db.Column(db.Integer, nullable=False)
     signature = db.Column(db.String(150))
-    dateCreated = db.Column(db.DateTime, default=datetime.now)
+    dateCreated = db.Column(db.String(150), default=datetime.now().strftime('%m-%d-%Y %H:%M'))
 
 # For list of user's verified signatures
 class SignDatabase(db.Model):
@@ -21,6 +21,6 @@ class SignDatabase(db.Model):
     percentage = db.Column(db.Integer, nullable=False)
     accurate = db.Column(db.Boolean, nullable=True)
     isUserSignature = db.Column(db.Boolean, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.now)
+    date = db.Column(db.String(150), default=datetime.now().strftime('%m-%d-%Y %H:%M'))
 
 

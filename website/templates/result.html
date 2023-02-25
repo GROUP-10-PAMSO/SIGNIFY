@@ -32,11 +32,11 @@
             <div class="col-md-6 d-flex flex-column">
                 <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
             </div>
-            {% elif (prediction == 0) %}
+            {% elif (prediction == 1) %}
             <div class="col-md-6 d-flex flex-column">
                 <img src="../static/sign_storage/{{ user.id }}/real/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
             </div>
-            {% elif (prediction == 1) %}
+            {% elif (prediction == 0) %}
             <div class="col-md-6 d-flex flex-column">
                 <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
             </div>
@@ -49,14 +49,14 @@
             <div class="col-md-6 d-flex flex-column">
                 <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
             </div>
-            {% elif (prediction == 0) %}
+            {% elif (prediction == 1) %}
             <div class="col-md-6 d-flex flex-column">
                 <img src="../static/sign_storage/{{ user.id }}/real/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
             </div>
             <div class="col-md-6 d-flex flex-column">
                 <img src="../static/sign_storage/{{ user.id }}/real/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
             </div>
-            {% elif (prediction == 1) %}
+            {% elif (prediction == 0) %}
             <div class="col-md-6 d-flex flex-column">
                 <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
             </div>
@@ -89,6 +89,7 @@
             <h3>Is this true?</h3>
             <form action="" method="POST" class="" enctype="multipart/form-data">
                 <div class="col">
+                    <input type="hidden" name="signID" value="{{ signID }}">
                     <button type="submit" name="confirmation" value="0" class="btn btn-success m-1">Yes</a>
                     <button type="submit" name="confirmation" value="1" class="btn btn-danger m-1">No</a>
                     <button type="submit" name="confirmation" value="2" class="btn btn-secondary m-1">Not sure</a>
@@ -101,6 +102,7 @@
         <div class="col">
             <h3>Thank you for the response!</h3>
             <a href="/verify" class="btn btn-info">Verify Again</a>
+            <a href="/account" class="btn btn-info">Go To Account</a>
         </div>
     </div>
     {% endif %}

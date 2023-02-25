@@ -2,7 +2,7 @@ $(document).ready(function () {
     function load_data(value = 0, page = 1) {
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/signatureCategory",
+            url: "/signatureCategory",
             data: { 
                 value: value, // Displays your verified list of signature which you use your own signature as comparison
                 page: page
@@ -17,12 +17,12 @@ $(document).ready(function () {
                 for (var i = 0; i < data.length; i++) {
                     let row = '<tr>';
                     row += '<th scope="row">' + (start + i + 1) + '</th>';
-                    row += '<td>' + data[i][0] + '</td>';
                     row += '<td>' + data[i][1] + '</td>';
-                    row += '<td>' + data[i][2] + '</td>';  
-                    row += '<td>' + data[i][3] + '</td>'; 
+                    row += '<td>' + data[i][2] + '</td>';
+                    row += '<td>' + data[i][3] + '</td>';  
                     row += '<td>' + data[i][4] + '</td>'; 
-                    row += '<td> <a href="/viewDetails">More</a> </td>'; 
+                    row += '<td>' + data[i][5] + '</td>'; 
+                    row += '<td> <button value="'+ data[i][0] + '" class="viewMore" type="button">More</button> </td>'; 
                     row += '</tr>';
                     $("#signatureTable tbody").append(row);
                 }
@@ -50,7 +50,23 @@ $(document).ready(function () {
                     paginationPage = '<li class="page-item disable" page="' + (page + 1) + '"><a class="page-link" href="#signatureTable">Next</a></li>'
                 }
                 $("#pagination").append(paginationPage);
-                
+
+                $(".viewMore").click(function() {
+                    let signID = $(this).val()
+                    $.ajax({
+                        type: "POST",
+                        url: "/moreDetails",
+                        data: {
+                            signID: signID
+                        },
+                        success: function (response) {
+                            window.location.href = response.redirect;
+                        },
+                        error: function (error) {
+                            console.log(error)
+                        }
+                    });
+                })
             },
             error: function (response) {
                 console.log(response);
@@ -104,7 +120,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/verifySignature",
+            url: "/verifySignature",
             data: formData,
             processData: false,
             contentType: false,
@@ -127,12 +143,13 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/changeSignature",
+            url: "/changeSignature",
             data: formData,
             processData: false,
             contentType: false,
             success: function (response) {
                 $('#currentUserSignature').attr('src', "../static/sign_storage/" + response.id + "/" + response.userSignature_sec + "?" + new Date().getTime());
+                $('#modalUserSignature').attr('src', "../static/sign_storage/" + response.id + "/" + response.userSignature_sec + "?" + new Date().getTime())
             },
             error: function (response) {
                 console.log(response);
