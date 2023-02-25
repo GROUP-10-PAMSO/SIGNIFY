@@ -1,0 +1,99 @@
+from distutils.log import warn
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask_login import login_user, login_required, logout_user, current_user
+from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from . import db, UPLOAD_FOLDER, ALLOWED_EXTENSIONS
+from .models import SignatureModel
+from .database import UserDatabase, SignDatabase
+
+import os, pathlib, shutil
+
+output = Blueprint('output', __name__)
+
+@output.route('/result', methods=['GET', 'POST'])
+def result():
+    print("Reached!!")
+    isUserSignature = (request.args.get('isUserSignature') == 'True')
+    percentage = float(request.args.get('percent'))
+    picture1 = request.args.get('picture1')
+    picture2 = request.args.get('picture2')
+
+    if request.method == "POST":
+        if current_user.is_authenticated:
+            confirmation = int(request.form['confirmation'])
+            if isUserSignature:
+                return ownSignature(confirmation, percentage, picture1, picture2)
+            else:
+                return otherSignature(confirmation, percentage, picture1, picture2)
+
+    # return render_template("result.html", user=current_user)
+    return toDatabase(2, False, isUserSignature)
+
+def ownSignature(confirmation, percentage, picture1, picture2):
+    # Will send to SignDatabase if the signature detected is accurate
+    # Disregards the "not sure" data but it would still count on the number of signatures verified
+    prediction = 0 if percentage <= 50 else 1
+    if confirmation == 0: # Yes
+        signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=True, isUserSignature=True)
+        if prediction == 0:
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
+        elif prediction == 1:
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture2}")
+    elif confirmation == 1: # No
+        signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=False, isUserSignature=True)
+        prediction = not prediction
+        if prediction == 0:
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
+        elif prediction == 1:
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture2}")
+    elif confirmation == 2: # Not Sure
+        signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, isUserSignature=True)
+    db.session.add(signVerified)
+    db.session.commit()
+
+    return toDatabase(prediction, True, True)
+
+def otherSignature(confirmation, percentage, picture1, picture2):
+    # Will send to SignDatabase if the signature detected is accurate
+    # Disregards the "not sure" data but it would still count on the number of signatures verified
+    prediction = 0 if percentage <= 50 else 1
+    if confirmation == 0: # Yes
+        signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=True, isUserSignature=False)
+        if prediction == 0:
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture1}")
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
+        elif prediction == 1:
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture1}")
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture2}")
+    elif confirmation == 1: # No
+        signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=False, isUserSignature=False)
+        prediction = not prediction
+        if prediction == 0:
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture1}")
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
+        elif prediction == 1:
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture1}")
+            shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture2}")
+    elif confirmation == 2: # Not Sure
+        signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, isUserSignature=False)
+    db.session.add(signVerified)
+    db.session.commit()
+
+    return toDatabase(prediction, True, False)
+
+def toDatabase(prediction, confirmed, isUserSignature):
+    print("Finally Reached here!!!")
+    signCount = db.session.query(SignDatabase).count()
+    meanAccuracy = db.session.query(db.func.avg(db.cast(SignDatabase.accurate, db.Integer))).filter(SignDatabase.accurate != None).scalar()
+    if meanAccuracy:
+        meanAccuracy = round(meanAccuracy * 100, 2)
+    else:
+        meanAccuracy = 0
+        
+    return render_template("result.html", user=current_user, 
+        verdict=request.args.get('verdict'), percent=request.args.get('percent'),
+        picture1=request.args.get('picture1'),
+        picture2=request.args.get('picture2'), confirmed=confirmed, prediction=prediction,
+        signCount=signCount, meanAccuracy=meanAccuracy, isUserSignature=isUserSignature)

@@ -67,7 +67,7 @@ def verify():
             counter.countPictures += 1
             db.session.commit()
 
-            return redirect(url_for('auth.result', verdict=verdict, percent=percent, picture1=picture1_sec, picture2=picture2_sec, isUserSignature=False))
+            return redirect(url_for('output.result', verdict=verdict, percent=percent, picture1=picture1_sec, picture2=picture2_sec, isUserSignature=False))
 
     signCount = db.session.query(SignDatabase).count()
     meanAccuracy = db.session.query(db.func.avg(db.cast(SignDatabase.accurate, db.Integer))).filter(SignDatabase.accurate != None).scalar()
@@ -80,65 +80,6 @@ def verify():
         return redirect(url_for('auth.login'))
     else:
         return render_template("verify.html", user=current_user, signCount=signCount, meanAccuracy=meanAccuracy)
-    
-@auth.route('/result', methods=['GET', 'POST'])
-def result():
-    if request.method == "POST":
-        if current_user.is_authenticated:
-            # Will send to SignDatabase if the signature detected is accurate
-            # Disregards the "not sure" data but it would still count on the number of signatures verified
-            confirmation = int(request.form['confirmation'])
-            isUserSignature = (request.args.get('isUserSignature') == 'true')
-            percentage = float(request.args.get('percent'))
-            picture1 = request.args.get('picture1')
-            picture2 = request.args.get('picture2')
-
-            prediction = 0 if percentage <= 50 else 1
-            if confirmation == 0: # Yes
-                signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=True, isUserSignature=isUserSignature)
-                if prediction == 0:
-                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture1}")
-                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
-                elif prediction == 1:
-                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture1}")
-                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture2}")
-            elif confirmation == 1: # No
-                signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, accurate=False, isUserSignature=isUserSignature)
-                prediction = not prediction
-                if prediction == 0:
-                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture1}")
-                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/real/{picture2}")
-                elif prediction == 1:
-                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture1}")
-                    shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture2}")
-            elif confirmation == 2: # Not Sure
-                signVerified = SignDatabase(user_id=current_user.id, picture1=picture1, picture2=picture2, percentage=percentage, isUserSignature=isUserSignature)
-            db.session.add(signVerified)
-            db.session.commit()
-
-            signCount = db.session.query(SignDatabase).count()
-            meanAccuracy = db.session.query(db.func.avg(db.cast(SignDatabase.accurate, db.Integer))).filter(SignDatabase.accurate != None).scalar()
-            if meanAccuracy:
-                meanAccuracy = round(meanAccuracy * 100, 2)
-            else:
-                meanAccuracy = 0
-            return render_template("result.html", user=current_user, 
-                verdict=request.args.get('verdict'), percent=request.args.get('percent'),
-                picture1=request.args.get('picture1'),
-                picture2=request.args.get('picture2'), confirmed=True, prediction=prediction,
-                signCount=signCount, meanAccuracy=meanAccuracy)
-
-    signCount = db.session.query(SignDatabase).count()
-    meanAccuracy = db.session.query(db.func.avg(db.cast(SignDatabase.accurate, db.Integer))).filter(SignDatabase.accurate != None).scalar()
-    if meanAccuracy:
-        meanAccuracy = round(meanAccuracy * 100, 2)
-    else:
-        meanAccuracy = 0
-    return render_template("result.html", user=current_user, 
-        verdict=request.args.get('verdict'), percent=request.args.get('percent'),
-        picture1=request.args.get('picture1'),
-        picture2=request.args.get('picture2'), confirmed=False, prediction=2,
-        signCount=signCount, meanAccuracy=meanAccuracy)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():

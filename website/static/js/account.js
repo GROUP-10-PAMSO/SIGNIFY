@@ -12,8 +12,8 @@ $(document).ready(function () {
                 let data = response.listSignatures
                 let totalPages = response.totalPages
                 let start = response.start
-                $("#signatureTable tbody").empty();
 
+                $("#signatureTable tbody").empty();
                 for (var i = 0; i < data.length; i++) {
                     let row = '<tr>';
                     row += '<th scope="row">' + (start + i + 1) + '</th>';
@@ -22,14 +22,14 @@ $(document).ready(function () {
                     row += '<td>' + data[i][2] + '</td>';  
                     row += '<td>' + data[i][3] + '</td>'; 
                     row += '<td>' + data[i][4] + '</td>'; 
+                    row += '<td> <a href="/viewDetails">More</a> </td>'; 
                     row += '</tr>';
                     $("#signatureTable tbody").append(row);
                 }
 
                 $("#pagination").empty();
-
                 if (page == 1) {
-                    paginationPage = '<li class="page-item" page="'+ page +'"><a class="page-link" href="#signatureTable">Previous</a></li>'
+                    paginationPage = '<li class="page-item" page="' + page + '"><a class="page-link" href="#signatureTable">Previous</a></li>'
                 }
                 else {
                     paginationPage = '<li class="page-item" page="' + (page - 1) +'"><a class="page-link" href="#signatureTable">Previous</a></li>'
@@ -37,17 +37,17 @@ $(document).ready(function () {
                 $("#pagination").append(paginationPage);
 
                 for (var i = 0; i < totalPages; i++) {
-                    paginationPage = '<li class="page-item" page="'+ (i + 1) + '">';
+                    paginationPage = '<li class="page-item" page="' + (i + 1) + '">';
                     paginationPage += '<a class="page-link" href="#signatureTable">' + (i + 1) + "</a>";
                     paginationPage += "</li>"
                     $("#pagination").append(paginationPage); 
-                }
+                }  
 
                 if (page == totalPages) {
-                    paginationPage = '<li class="page-item disable" page="' + page +'"><a class="page-link" href="#signatureTable">Next</a></li>'
+                    paginationPage = '<li class="page-item disable" page="' + page + '"><a class="page-link" href="#signatureTable">Next</a></li>'
                 }
                 else {
-                    paginationPage = '<li class="page-item disable" page="' + (page + 1) +'"><a class="page-link" href="#signatureTable">Next</a></li>'
+                    paginationPage = '<li class="page-item disable" page="' + (page + 1) + '"><a class="page-link" href="#signatureTable">Next</a></li>'
                 }
                 $("#pagination").append(paginationPage);
                 
@@ -109,12 +109,11 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function(response) {
-                let parameters = $.param(response);
-                window.location.href = "http://127.0.0.1:5000/result" + "?" + parameters;
+                window.location.href = response.redirect;
             },
-            error: function (response) {
-                console.log(response);
-            }
+            error: function(error) {
+                console.log(error)
+            },
         });
         
     });
@@ -133,7 +132,7 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                $('#currentUserSignature').attr('src', "../static/sign_storage/" + response.userSignature_sec);
+                $('#currentUserSignature').attr('src', "../static/sign_storage/" + response.id + "/" + response.userSignature_sec + "?" + new Date().getTime());
             },
             error: function (response) {
                 console.log(response);

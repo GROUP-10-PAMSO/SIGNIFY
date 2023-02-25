@@ -4,33 +4,66 @@
 
 {% block css %} 
 <link rel="stylesheet" href="../static/css/result.css">
+
+{% if percent|float <= 50 %}
+<style>
+    .red-gradient::before{
+        background-image: linear-gradient(to right, rgb(201, 255, 201), green); /* your gradient here */
+    }
+</style>
+{% else %}
+<style>
+    .red-gradient::before{
+        background-image: linear-gradient(to right, rgb(248, 218, 218), red); /* your gradient here */
+    }
+</style>
+{% endif %}
 {% endblock %}
 
 {% block content%}
 <h1 class="text-center">Results</h1>
 <div class="container text-center">
     <div class="row">
-        {% if (prediction == 2) %}
-        <div class="col-md-6 d-flex flex-column">
-            <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
-        </div>
-        <div class="col-md-6 d-flex flex-column">
-            <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
-        </div>
-        {% elif (prediction == 0) %}
-        <div class="col-md-6 d-flex flex-column">
-            <img src="../static/sign_storage/{{ user.id }}/real/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
-        </div>
-        <div class="col-md-6 d-flex flex-column">
-            <img src="../static/sign_storage/{{ user.id }}/real/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
-        </div>
-        {% elif (prediction == 1) %}
-        <div class="col-md-6 d-flex flex-column">
-            <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
-        </div>
-        <div class="col-md-6 d-flex flex-column">
-            <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
-        </div>
+        {% if isUserSignature %}
+            <div class="col-md-6 d-flex flex-column">
+                <img src="../static/sign_storage/{{ user.id }}/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
+            </div>
+            {% if (prediction == 2) %}
+            <div class="col-md-6 d-flex flex-column">
+                <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
+            </div>
+            {% elif (prediction == 0) %}
+            <div class="col-md-6 d-flex flex-column">
+                <img src="../static/sign_storage/{{ user.id }}/real/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
+            </div>
+            {% elif (prediction == 1) %}
+            <div class="col-md-6 d-flex flex-column">
+                <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
+            </div>
+            {% endif %}
+        {% else %}
+            {% if (prediction == 2) %}
+            <div class="col-md-6 d-flex flex-column">
+                <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
+            </div>
+            <div class="col-md-6 d-flex flex-column">
+                <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
+            </div>
+            {% elif (prediction == 0) %}
+            <div class="col-md-6 d-flex flex-column">
+                <img src="../static/sign_storage/{{ user.id }}/real/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
+            </div>
+            <div class="col-md-6 d-flex flex-column">
+                <img src="../static/sign_storage/{{ user.id }}/real/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
+            </div>
+            {% elif (prediction == 1) %}
+            <div class="col-md-6 d-flex flex-column">
+                <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
+            </div>
+            <div class="col-md-6 d-flex flex-column">
+                <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
+            </div>
+            {% endif %}
         {% endif %}
     </div> <br>
 </div>

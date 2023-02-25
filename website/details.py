@@ -14,6 +14,10 @@ details = Blueprint('details', __name__)
 def account():
     return render_template("account.html", user=current_user)
 
+@details.route('/viewDetails')
+def viewDetails():
+    return render_template("viewDetails.html", user=current_user)
+
 @details.route('/changeSignature', methods=['POST'])
 def changeSignature():
     userSignature = request.files['userSignature']
@@ -24,13 +28,16 @@ def changeSignature():
     elif not(ext_userSignature in ALLOWED_EXTENSIONS): # If it is not a supported image file
         pass
     else:
-        userSignature_sec = secure_filename(userSignature.filename)
-        userSignature.save(os.path.join(UPLOAD_FOLDER, userSignature_sec))
+        print(secure_filename(userSignature.filename))
+        userSignature_sec = str(current_user.id) + "_userSignature.PNG"
+        user_folder = UPLOAD_FOLDER + f"{current_user.id}/"
+        userSignature.save(os.path.join(user_folder, userSignature_sec))
+
         change = db.session.query(UserDatabase).filter_by(id=current_user.id).first()
         change.signature = userSignature_sec
         db.session.commit()
 
-        return jsonify(userSignature_sec=userSignature_sec)
+        return jsonify(id=current_user.id ,userSignature_sec=userSignature_sec)
 
 @details.route('/verifySignature', methods=['POST', 'GET'])
 def verifySignature():
@@ -43,13 +50,14 @@ def verifySignature():
         pass
     else:
         toVerifySignature_sec = secure_filename(toVerifySignature.filename)
-        toVerifySignature.save(os.path.join(UPLOAD_FOLDER, toVerifySignature_sec))
+        user_folder = UPLOAD_FOLDER + f"{current_user.id}/not sure/"
+        toVerifySignature.save(os.path.join(user_folder, toVerifySignature_sec))
         
         userSignature = db.session.query(UserDatabase).filter_by(id=current_user.id).first()
         picture1 = userSignature.signature
         picture2 = toVerifySignature_sec
         
-        verify = SignatureModel(UPLOAD_FOLDER + picture1, UPLOAD_FOLDER + picture2)
+        verify = SignatureModel(UPLOAD_FOLDER + f"{current_user.id}/" + picture1, user_folder + picture2)
         verify.preprocess()
         verify.predict()
         output = verify.output()
@@ -57,7 +65,7 @@ def verifySignature():
         verdict = output[0]
         percent = round(output[1][0] * 100, 2)
 
-        return jsonify(verdict=verdict, percent=percent, picture1=picture2, picture2=picture2, isUserSignature=True)
+        return jsonify({'redirect': url_for('output.result', verdict=verdict, percent=percent, picture1=picture1, picture2=picture2, isUserSignature=True)})
 
 
 @details.route('/signatureCategory', methods=['POST'])
@@ -74,3 +82,7 @@ def signatureCategory():
     listSignatures = [(row.picture1, row.picture2, row.percentage, row.accurate, row.date) for row in getSignatures]
 
     return jsonify(listSignatures=listSignatures, totalPages=totalPages, totalRecords=totalRecords, start=start)
+
+@details.route('/moreDetails', methods=['GET', 'POST'])
+def moreDetails():
+    pass
