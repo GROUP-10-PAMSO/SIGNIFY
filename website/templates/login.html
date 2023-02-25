@@ -2,9 +2,13 @@
 
 {% block title %} Login Account {% endblock %}
 
+{% block css %}
+<link href="../static/css/login.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="container">
-    <h1 class="mb-4 text-center">Login</h1>
+<div class=" container login-container">
+    <h1 class="login-text text-center">Login</h1>
 
     <!-- {% if warn: %}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -42,7 +46,7 @@
             <a href="/signup">Create an account?</a>
         </div> <br>
         <div class="text-center">
-            <button class="btn btn-success" type="submit">Login</button>
+            <button class="btn btn-success login-button" type="submit">Login</button>
         </div>
     </form>
 </div>

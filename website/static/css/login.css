@@ -1,0 +1,28 @@
+.login-container{
+    background-color: #F4C2D7;
+    border-radius: 1cm;
+    height: 500px;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    padding-top: 125px;
+
+}
+.login-text {
+    color: #88214B;
+    font-family: Poppins;
+    font-weight: 600;
+}
+
+.login-button {
+    top: 470px;
+    left: 400px;
+    color: whitesmoke;
+    font-style: normal;
+    font-weight: 1000;
+    border-color: #88214b;
+    background-color: #88214B;
+    padding: 2%;
+    border-radius: 5px;
+}
