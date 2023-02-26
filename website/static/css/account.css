@@ -23,6 +23,14 @@ thead, tbody {
     font-family: '../static/fonts/Poppins-SemiBold.ttf';
 }
 
+th {
+    color: #CC3271
+}
+
+.page-link {
+    color: #CC3271
+}
+
 #ownSignatureButton, #changeButton, 
 #verifySignature, #saveUserSignature {
     color: white;
