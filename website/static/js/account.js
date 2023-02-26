@@ -14,15 +14,26 @@ $(document).ready(function () {
                 let start = response.start
 
                 $("#signatureTable tbody").empty();
-                for (var i = 0; i < data.length; i++) {
+                for (var i = 0; i < 5; i++) {
                     let row = '<tr>';
-                    row += '<th scope="row">' + (start + i + 1) + '</th>';
-                    row += '<td>' + data[i][1] + '</td>';
-                    row += '<td>' + data[i][2] + '</td>';
-                    row += '<td>' + data[i][3] + '</td>';  
-                    row += '<td>' + data[i][4] + '</td>'; 
-                    row += '<td>' + data[i][5] + '</td>'; 
-                    row += '<td> <button value="'+ data[i][0] + '" class="viewMore" type="button">More</button> </td>'; 
+                    if (data[i]) {
+                        row += '<th scope="row">' + (start + i + 1) + '</th>';
+                        row += '<td>' + data[i][1] + '</td>';
+                        row += '<td>' + data[i][2] + '</td>';
+                        row += '<td>' + data[i][3] + '</td>';  
+                        row += '<td>' + data[i][4] + '</td>'; 
+                        row += '<td>' + data[i][5] + '</td>'; 
+                        row += '<td> <button value="'+ data[i][0] + '" class="viewMore" type="button">More</button> </td>'; 
+                    }
+                    else {
+                        row += '<th scope="row">' + (start + i + 1) + '</th>';
+                        row += '<td></td>';
+                        row += '<td></td>';
+                        row += '<td></td>';  
+                        row += '<td></td>'; 
+                        row += '<td></td>'; 
+                        row += '<td></td>'; 
+                    }
                     row += '</tr>';
                     $("#signatureTable tbody").append(row);
                 }
@@ -94,7 +105,7 @@ $(document).ready(function () {
         if (file) {
             let reader = new FileReader();
             reader.onload = function(event){
-                $('#userSignature').attr('src', event.target.result);
+                $('#userSignatureDisplay').attr('src', event.target.result);
             }
             reader.readAsDataURL(file);
         }
@@ -105,13 +116,13 @@ $(document).ready(function () {
         if (file) {
             let reader = new FileReader();
             reader.onload = function(event){
-                $('#verifySignatureImage').attr('src', event.target.result);
+                $('#uploadedVerifySignature').attr('src', event.target.result);
             }
             reader.readAsDataURL(file);
         }
     });
 
-    $("#verifySignature").click(function (e) { 
+    $("#verifySignature").click(function () { 
         let verifySignatureInput = $("#verifySignatureInput")[0];
         let verifySignature = verifySignatureInput.files[0];
 
@@ -149,7 +160,7 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 $('#currentUserSignature').attr('src', "../static/sign_storage/" + response.id + "/" + response.userSignature_sec + "?" + new Date().getTime());
-                $('#modalUserSignature').attr('src', "../static/sign_storage/" + response.id + "/" + response.userSignature_sec + "?" + new Date().getTime())
+                $('#verifyUserSignature').attr('src', "../static/sign_storage/" + response.id + "/" + response.userSignature_sec + "?" + new Date().getTime());
             },
             error: function (response) {
                 console.log(response);

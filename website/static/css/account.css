@@ -1,0 +1,40 @@
+#currentUserSignature, #userSignatureDisplay, 
+#verifyUserSignature, #uploadedVerifySignature {
+    width: 250px;
+    height: 250px;
+
+    border-style: solid;
+    border-color: black;
+}
+
+table {
+    background-color: rgb(243, 239, 239);
+}
+thead, tbody {
+    font-family: '../static/fonts/Poppins-SemiBold.ttf';
+}
+
+#ownSignatureButton, #changeButton, 
+#verifySignature, #saveUserSignature {
+    color: white;
+    background-color: #88214B;
+}
+
+#userInformation, #signatureCategory {
+    font-family: '../static/fonts/Poppins-Black.ttf';
+    color: #CC3271
+}
+
+
+.modal-content, .window.container {
+    background-color: #F4C2D7;
+    border-radius: 20px;
+}
+
+.inside.container {
+    background-color: white;
+}
+
+.row {
+    padding: 0.5rem;
+}
