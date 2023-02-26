@@ -1,0 +1,25 @@
+.footer-button {
+    /* top: 470px;
+    left: 400px; */
+    color: whitesmoke;
+    font-style: normal;
+    font-weight: 1000;
+    border-color: #88214b;
+    background-color: #88214B;
+    padding: 0.5%;
+    border-radius: 5px;
+}
+
+.footer-button:hover {
+    background-color: #88214B;
+    color: white;
+}
+
+.nav-link, .nav-link:focus, .dropdown-item  {
+    color: #CC3271;
+}
+
+.nav-link:hover, .dropdown-item:hover {
+    background-color: #f2c1d7;
+    color: white;
+}

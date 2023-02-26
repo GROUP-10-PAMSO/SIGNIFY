@@ -8,18 +8,19 @@
 
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link href="../static/css/login.css" rel="stylesheet">
+    <link href="../static/css/base.css" rel="stylesheet">
 
     {% block css %} {% endblock %}
 </head>
 <body>
     <nav class="navbar navbar-light navbar-expand-sm fixed-top bg-white mb-3">
         <div class="container-fluid">
-            <img src="../static/images/logo.png" alt="image" height="25">
-            <img src="../static/images/signify.png" alt="image" height="25">
-
+            <a href="" class="navbar-brand">
+                <img src="../static/images/logo.png" alt="image" height="25">
+                <img src="../static/images/signify.png" alt="image" height="25">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll">
-                <span><iconify-icon icon="charm:menu-hamburger"></iconify-icon></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav">
@@ -61,12 +62,17 @@
 
     <!-- Create a footer here -->
     <footer class="text-center text-lg-start" style="background-color: #F2D5E4;">
-        <div class="container d-flex justify-content-center py-3">
-            <img src="../static/images/logo.png" alt="image" height="30">
-            <img src="../static/images/signify.png" alt="image" height="30" class="float-left">
-            <button type="button" id="changeButton" class="btn btn-success mx-2 footer-button" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</button>
-            <button type="button" id="changeButton" class="btn btn-success mx-2 footer-button" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Condition</button>
-        
+        <div class="container py-3">
+            <div class="row">
+                <div class="col-md-6 text-start">
+                    <img src="../static/images/logo.png" alt="image" height="30">
+                    <img src="../static/images/signify.png" alt="image" height="30" class="float-left">
+                </div>
+                <div class="col-md-6 text-end">
+                    <button type="button" class="btn mx-2 footer-button" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</button>
+                    <button type="button" class="btn mx-2 footer-button" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Condition</button>
+                </div>
+            </div>
         </div>
     </footer>
 
