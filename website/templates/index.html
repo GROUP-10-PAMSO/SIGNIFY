@@ -9,7 +9,7 @@
 {% block content %}
 <div class="container-fluid text-center">
     <div class="home-container container-fluid">
-        <div class="home-container1 row">
+        <div class="home-container1 p-md-5 row text-center">
             <div class="col text-center">
                 <h6 class="home-text02">Free 30 Days Trial</h6>
                 <h1 class="home-text01">Identify a</h1>
@@ -17,7 +17,9 @@
                 <p class="home-text01">authenticity</p>
                 <h6 class="home-text03">This webapp uses image recognition through machine</h6>
                 <h6 class="home-text03">learning to validate the true signature of the user.</h6>
-                <a href="/verify" class="btn btn-success home-button">Click to Verify</a>
+                <br>
+                <br>
+                <a href="/verify" class="btn btn-success home-button">Upload Your Signature</a>
             </div>
             <div class="col text-center">
                 <img src="../static/images/char1.png" alt="image" class="home-image">
@@ -26,39 +28,45 @@
         <br>
         <br>
         <div class="home-container2 row text-center">
-            <h1 class="home-text04">How to Use Signify?</h1>
+            <div class="home-container3 p-md-5 text-center row">
+                <h1 class="home-text04">How to Use Signify?</h1>
             <br>
             <br>
-            <div class="row">
-                <div class="col text-center">
+            <div class="row justify-content-center">
+                <div class="col-4 text-center">
                     <img src="../static/images/upload.png" alt="upload" class="home-image1">
                 </div>
-                <div class="col text-center">
+                <div class="col-4 text-center">
                     <h1 class="home-text04">Step 1: Upload.</h1>
-                    <h5 class="home-text06">Upload your first three signatures that will be placed in the dataset as a data of comparison for other signature attempts.</h5>
+                    <h5 class="home-text06">Upload your first three signatures 
+                        that will be placed in the dataset as a data 
+                        of comparison for other 
+                        signature attempts.</h5>
                 </div>
             </div>
-            <div class="row">
-                <div class="col text-center">
+            <br>
+            <br>
+            <div class="row justify-content-center">
+                <div class="col-4">
                     <img src="../static/images/select.png" alt="select" class="home-image2">
                 </div>
-                <div class="col text-center">
+                <div class="col-4 text-center">
                     <h1 class="home-text04">Step 2: Select.</h1>
                     <h5 class="home-text06">Select the Image of your signature which will be 
                         scanned to determine whether it is genuine or forged.</h5>
                 </div>
             </div>
-            <div class="row">
-                <div class="col text-center">
+            <div class="row justify-content-center">
+                <div class="col-4 text-center">
                     <img src="../static/images/scan.png" alt="select" class="home-image1">
                 </div>
-                <div class="col text-center">
+                <div class="col-4 text-center">
                     <h1 class="home-text04">Step 3: Scan.</h1>
                     <h5 class="home-text06">The system will identify the percentage of the signature accuracy and will tell 
                         whether the signature is forged or genuine.</h5>
                 </div>
             </div>
-
+            </div>
             <div class="row">
                 <div class="col text-center">
                     <img src="../static/images/fake.png" alt="fake news" class="home-image6" >
@@ -72,6 +80,7 @@
                     </h5>
                 </div>
             </div>
+            
             <div class="row">
                 <div class="col text-center">
                     <h1 class="home-text04">Importance of Signature</h1>
