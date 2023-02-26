@@ -1,0 +1,46 @@
+#instructions {
+    font-family: "../static/fonts/Poppins-Regular.ttf";
+    color: #CC3271;
+}
+
+#preview1, #preview2 {
+    width: 250px;
+    height: 250px;
+}
+
+#infoModel {
+    background-color: #F4C2D7;
+    width: 85%;
+}
+
+.form-control::file-selector-button, .btn {
+    color: white;
+    background-color: #88214B;
+}
+
+.form-control:hover:not(:disabled):not([readonly])::file-selector-button, .btn:hover  {
+    color:white;
+    background-color: #b66787;
+}
+
+.window.container, .inside.container, #infoModel {
+    border-radius: 16px;
+}
+
+.window.container {
+    background-color: #F4C2D7;
+}
+
+.inside.container {
+    background-color: #EDEDED;
+    box-shadow: 5px 5px 13px #333333;
+}
+
+.title, .stats:nth-child(2) {
+    font-family: "../static/fonts/Poppins-SemiBold.ttf";
+    margin-bottom: 0px;
+}
+
+.stats:nth-child(3) {
+    font-family: "../static/fonts/Poppins-Regular.ttf";
+}

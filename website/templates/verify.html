@@ -2,58 +2,61 @@
 
 {% block title %} Verify Signature {% endblock %}
 
+{% block css %}
+<link rel="stylesheet" href="../static/css/verify.css">
+{% endblock %}
+
+
 {% block content%}
-<h1 class="text-center">Verify Your Signature</h1> <br>
-<!-- <h5 class="text-center mb-md-3">Tip: Make your signature center to the image to have a more accurate predictions</h5> -->
-<form action="" method="POST" class="" enctype="multipart/form-data">
-    <div class="container text-center">
-        <div class="row">
-            <div class="col-md-6 d-flex flex-column">
-                <input type="file" name="picture1" id="picture1" class="form-control mb-3">
-                <img src="" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
+<div class="window container p-md-5 p-3">
+    <div class="inside container pt-md-4 pt-2">
+        <h1 class="title text-center">Verify Your Signature</h1> <br>
+        <form action="" method="POST" class="" enctype="multipart/form-data">
+        <div class="row text-center">
+            <div class="col-md-6">
+                <input type="file" name="picture1" id="picture1" class="form-control mb-3"> <br>
+                <img src="../static/images/picture_icon_nbg.png" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
             </div>
-            <div class="col-md-6 d-flex flex-column">
-                <input type="file" name="picture2" id="picture2" class="form-control mb-3">
-                <img src="" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px;">
+            <div class="col-md-6">
+                <input type="file" name="picture2" id="picture2" class="form-control mb-3"> <br>
+                <img src="../static/images/picture_icon_nbg.png" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px;">
             </div>
         </div>
-        <!-- <div class="row">
-            <div class="col form-check">
-                <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input text-center" name="toScanner" id="toScanner" value="1">
-                    Apply Scanner Filter
-                </label>
-            </div>
-        </div> -->
-        <div class="row">
+        <div class="row text-center">
             <div class="col">
-                <button type="submit" class="btn btn-info">Verify</button>
-                <a href="/" class="btn btn-info">Back</a>
+                <button type="submit" class="btn">Verify</button>
+                <a href="/" class="btn">Back</a>
             </div>
         </div>
-    </div>
-</form>
-
-<div class="container">
-    <ul>Instructions:
-        <li>Focus on the signature only</li>
-        <li>Make sure it was captured on a non-striped paper</li>
-    </ul>
-</div>
-
-<div class="container mt-5 border border-success">
-    <div class="row text-center pb-2">
-        <h1>About the Model</h1>
-    </div>
-    <div class="row text-center">
-        <div class="col-sm-6">
-            <h2>{{ signCount }}</h2>
-            <p>Signatures Verified</p>
+        </form>
+        
+        <div class="row" id="instructions">
+            <div class="col">
+                <ol>Instructions:
+                    <li>Focus on the signature only</li>
+                    <li>Make sure it was captured on a non-striped paper</li>
+                </ol>
+            </div>
         </div>
-        <div class="col-sm-6">
-            <h2>{{ meanAccuracy }}%</h2>
-            <p>Accuracy</p>
+        
+        <div id="infoModel" class="container mt-5">
+            <div class="row text-center py-2">
+                <h1 class="title">About the Model</h1>
+            </div>
+            <div class="row text-center">
+                <div class="col-sm-6">
+                    <span class="iconify" data-icon="ic:baseline-verified" style="color:#88214B" data-width="50" data-height="50"></span>
+                    <p class="stats fs-2">{{ signCount }}</p>
+                    <p class="stats">Signatures Verified</p>
+                </div>
+                <div class="col-sm-6">
+                    <span class="iconify" data-icon="fluent:target-arrow-16-filled" style="color:#88214B" data-width="50" data-height="50"></span>
+                    <p class="stats fs-2">{{ meanAccuracy }}%</p>
+                    <p class="stats">Accuracy</p>
+                </div>
+            </div>
         </div>
+        <br><br><br>
     </div>
 </div>
 {% endblock%}

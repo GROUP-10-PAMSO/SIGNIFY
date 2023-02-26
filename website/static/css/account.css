@@ -7,6 +7,15 @@
     border-color: black;
 }
 
+.form-control::file-selector-button {
+    color: white;
+    background-color: #88214B;
+}
+
+.form-control:hover:not(:disabled):not([readonly])::file-selector-button  {
+    background-color: #b66787;
+}
+
 table {
     background-color: rgb(243, 239, 239);
 }
@@ -26,13 +35,14 @@ thead, tbody {
 }
 
 
-.modal-content, .window.container {
+.modal-content, .window.container, .inside.container {
     background-color: #F4C2D7;
     border-radius: 20px;
 }
 
 .inside.container {
     background-color: white;
+    box-shadow: 5px 5px 13px #333333;
 }
 
 .row {
