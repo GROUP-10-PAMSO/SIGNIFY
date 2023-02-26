@@ -21,108 +21,119 @@
 {% endblock %}
 
 {% block content%}
-<h1 class="text-center">Results</h1>
-<div class="container text-center">
-    <div class="row">
-        {% if isUserSignature %}
-            <div class="col-md-6 d-flex flex-column">
-                <img src="../static/sign_storage/{{ user.id }}/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
-            </div>
-            {% if (prediction == 2) %}
-            <div class="col-md-6 d-flex flex-column">
-                <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
-            </div>
-            {% elif (prediction == 1) %}
-            <div class="col-md-6 d-flex flex-column">
-                <img src="../static/sign_storage/{{ user.id }}/real/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
-            </div>
-            {% elif (prediction == 0) %}
-            <div class="col-md-6 d-flex flex-column">
-                <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
-            </div>
-            {% endif %}
-        {% else %}
-            {% if (prediction == 2) %}
-            <div class="col-md-6 d-flex flex-column">
-                <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
-            </div>
-            <div class="col-md-6 d-flex flex-column">
-                <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
-            </div>
-            {% elif (prediction == 1) %}
-            <div class="col-md-6 d-flex flex-column">
-                <img src="../static/sign_storage/{{ user.id }}/real/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
-            </div>
-            <div class="col-md-6 d-flex flex-column">
-                <img src="../static/sign_storage/{{ user.id }}/real/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
-            </div>
-            {% elif (prediction == 0) %}
-            <div class="col-md-6 d-flex flex-column">
-                <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture1 }}" alt="Insert your picture here." id="preview1" width="inherit" style="max-height: 200px;">
-            </div>
-            <div class="col-md-6 d-flex flex-column">
-                <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture2 }}" alt="Insert your picture here." id="preview2" width="inherit" style="max-height: 200px">
-            </div>
-            {% endif %}
-        {% endif %}
-    </div> <br>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm-6 text-start p-0">Genuine</div>
-        <div class="col-sm-6 text-end p-0">Forged</div>
-    </div>
-    
-    <div class="row progress-bar-container">
-        <div class="red-gradient"></div>
-    </div>
-
-    <div class="row text-center mt-3">
-        <p class="m-0">Prediction: {{ verdict }}</p>
-        <p class="m-0">Confidence: {{ percent }}%</p>
-    </div>
-
-    {% if not confirmed %}
-    <div class="row text-center mt-3">
-        <div class="col">
-            <h3>Is this true?</h3>
-            <form action="" method="POST" class="" enctype="multipart/form-data">
-                <div class="col">
-                    <input type="hidden" name="signID" value="{{ signID }}">
-                    <button type="submit" name="confirmation" value="0" class="btn btn-success m-1">Yes</a>
-                    <button type="submit" name="confirmation" value="1" class="btn btn-danger m-1">No</a>
-                    <button type="submit" name="confirmation" value="2" class="btn btn-secondary m-1">Not sure</a>
+<div class="window container p-md-5 p-3">
+    <div class="inside container pt-md-4 pt-2 text-center">
+        <h1 class="title">Results</h1> <br>
+        <div class="row">
+            {% if isUserSignature %}
+                <div class="col-md-6">
+                    <img src="../static/sign_storage/{{ user.id }}/{{ picture1 }}" alt="Insert your picture here." id="preview1">
                 </div>
-            </form>
+                {% if (prediction == 2) %}
+                <div class="col-md-6">
+                    <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture2 }}" alt="Insert your picture here." id="preview2">
+                </div>
+                {% elif (prediction == 1) %}
+                <div class="col-md-6">
+                    <img src="../static/sign_storage/{{ user.id }}/real/{{ picture2 }}" alt="Insert your picture here." id="preview2">
+                </div>
+                {% elif (prediction == 0) %}
+                <div class="col-md-6">
+                    <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture2 }}" alt="Insert your picture here." id="preview2">
+                </div>
+                {% endif %}
+            {% else %}
+                {% if (prediction == 2) %}
+                <div class="col-md-6">
+                    <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture1 }}" alt="Insert your picture here." id="preview1">
+                </div>
+                <div class="col-md-6">
+                    <img src="../static/sign_storage/{{ user.id }}/not sure/{{ picture2 }}" alt="Insert your picture here." id="preview2">
+                </div>
+                {% elif (prediction == 1) %}
+                <div class="col-md-6">
+                    <img src="../static/sign_storage/{{ user.id }}/real/{{ picture1 }}" alt="Insert your picture here." id="preview1">
+                </div>
+                <div class="col-md-6">
+                    <img src="../static/sign_storage/{{ user.id }}/real/{{ picture2 }}" alt="Insert your picture here." id="preview2">
+                </div>
+                {% elif (prediction == 0) %}
+                <div class="col-md-6">
+                    <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture1 }}" alt="Insert your picture here." id="preview1">
+                </div>
+                <div class="col-md-6">
+                    <img src="../static/sign_storage/{{ user.id }}/forg/{{ picture2 }}" alt="Insert your picture here." id="preview2">
+                </div>
+                {% endif %}
+            {% endif %}
         </div>
-    </div>
-    {% else %}
-    <div class="row text-center mt-3">
-        <div class="col">
-            <h3>Thank you for the response!</h3>
-            <a href="/verify" class="btn btn-info">Verify Again</a>
-            <a href="/account" class="btn btn-info">Go To Account</a>
+        <div class="row text-center">
+            <div class="col-sm-6 text-start">Genuine</div>
+            <div class="col-sm-6 text-end">Forged</div>
         </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="progress-bar-container">
+                    <div class="red-gradient"></div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row text-center mt-3 status">
+            <div class="col">
+                <p class="m-0">Prediction: {{ verdict }}</p>
+            </div>
+            <div class="col">
+                <p class="m-0">Confidence: {{ percent }}%</p>
+            </div>
+        </div>
+    
+        {% if not confirmed %}
+        <div class="row text-center mt-3">
+            <div class="col">
+                <h3>Is this true?</h3>
+                <form action="" method="POST" class="" enctype="multipart/form-data">
+                    <div class="col">
+                        <input type="hidden" name="signID" value="{{ signID }}">
+                        <button type="submit" name="confirmation" value="0" class="btn m-1">Yes</a>
+                        <button type="submit" name="confirmation" value="1" class="btn m-1">No</a>
+                        <button type="submit" name="confirmation" value="2" class="btn m-1">Not sure</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="row text-center mt-3">
+            <div class="col">
+                <h3>Thank you for the response!</h3>
+                <a href="/verify" class="btn">Verify Again</a>
+                <a href="/account" class="btn">Go To Account</a>
+            </div>
+        </div>
+        {% endif %}
+
+        <div id="infoModel" class="container mt-5">
+            <div class="row text-center py-2">
+                <h1 class="title">About the Model</h1>
+            </div>
+            <div class="row text-center">
+                <div class="col-sm-6">
+                    <span class="iconify" data-icon="ic:baseline-verified" style="color:#88214B" data-width="50" data-height="50"></span>
+                    <p class="stats fs-2">{{ signCount }}</p>
+                    <p class="stats">Signatures Verified</p>
+                </div>
+                <div class="col-sm-6">
+                    <span class="iconify" data-icon="fluent:target-arrow-16-filled" style="color:#88214B" data-width="50" data-height="50"></span>
+                    <p class="stats fs-2">{{ meanAccuracy }}%</p>
+                    <p class="stats">Accuracy</p>
+                </div>
+            </div>
+        </div>
+        <br><br><br>
     </div>
-    {% endif %}
 </div>
 
-<div class="container mt-5 border border-success">
-    <div class="row text-center pb-2">
-        <h1>About the Model</h1>
-    </div>
-    <div class="row text-center">
-        <div class="col-sm-6">
-            <h2>{{ signCount }}</h2>
-            <p>Signatures Verified</p>
-        </div>
-        <div class="col-sm-6">
-            <h2>{{ meanAccuracy }}%</h2>
-            <p>Accuracy</p>
-        </div>
-    </div>
-</div>
 {% endblock %}
 
 {% block script %}

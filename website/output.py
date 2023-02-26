@@ -58,7 +58,7 @@ def ownSignature(confirmation, percentage, picture2, signID):
         elif prediction == 0:
             shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture2}")
     elif confirmation == 2: # Not Sure
-        pass
+        prediction = 2
 
     return toDatabase(prediction, True, True)
 
@@ -86,7 +86,7 @@ def otherSignature(confirmation, percentage, picture1, picture2, signID):
             shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture1}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture1}")
             shutil.move(UPLOAD_FOLDER + f"{current_user.id}/not sure/{picture2}", UPLOAD_FOLDER + f"{current_user.id}/forg/{picture2}")
     elif confirmation == 2: # Not Sure
-        pass
+        prediction = 2
 
     return toDatabase(prediction, False, True)
 

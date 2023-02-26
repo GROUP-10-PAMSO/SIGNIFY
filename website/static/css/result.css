@@ -1,3 +1,8 @@
+#preview1, #preview2 {
+    width: 250px;
+    height: 250px;
+}
+
 .progress-bar-container {
     height: 1rem;
     background:#e9ecef;
@@ -18,4 +23,40 @@
     left:0;
     right:0;
     bottom:0;
+}
+#infoModel {
+    background-color: #F4C2D7;
+    width: 85%;
+}
+
+.window.container, .inside.container, #infoModel {
+    border-radius: 16px;
+}
+
+.window.container {
+    background-color: #F4C2D7;
+}
+
+.inside.container {
+    background-color: white;
+    box-shadow: 5px 5px 13px #333333;
+}
+
+.btn {
+    color: white;
+    background-color: #88214B;
+}
+
+.btn:hover  {
+    color:white;
+    background-color: #b66787;
+}
+
+.title, .stats:nth-child(2) {
+    font-family: "../static/fonts/Poppins-SemiBold.ttf";
+    margin-bottom: 0px;
+}
+
+.stats:nth-child(3), .status {
+    font-family: "../static/fonts/Poppins-Regular.ttf";
 }
