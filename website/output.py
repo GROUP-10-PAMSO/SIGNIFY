@@ -1,14 +1,9 @@
-from distutils.log import warn
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import login_user, login_required, logout_user, current_user
-from werkzeug.utils import secure_filename
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Blueprint, render_template, request
+from flask_login import current_user
+from . import db, UPLOAD_FOLDER
+from .database import SignDatabase
 
-from . import db, UPLOAD_FOLDER, ALLOWED_EXTENSIONS
-from .models import SignatureModel
-from .database import UserDatabase, SignDatabase
-
-import os, pathlib, shutil
+import shutil
 
 output = Blueprint('output', __name__)
 

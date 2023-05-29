@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, url_for, jsonify
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 
@@ -96,10 +96,7 @@ def moreDetails():
     getRecord = SignDatabase.query.get_or_404(signID)
 
     boolPercentage = True if getRecord.percentage <= 50 else False
-    print(boolPercentage)
-    print(int(boolPercentage))
     prediction = int(boolPercentage if getRecord.accurate else ((not boolPercentage) if getRecord.accurate != None else 2))
-    print(prediction)
     confirmed = True if prediction != 2 else False
     
     verdict = "Genuine" if (getRecord.percentage <= 0.5) else "Forged"

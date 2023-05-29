@@ -1,11 +1,10 @@
-import numpy as np
 import cv2
+import tensorflow as tf
 
-from keras.layers import Lambda
 from keras import layers
 from keras import Input
 from keras import regularizers
-import tensorflow as tf
+
 
 SIZE = 128
 
