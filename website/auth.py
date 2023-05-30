@@ -7,7 +7,7 @@ from . import db, UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from .models import SignatureModel
 from .database import UserDatabase, SignDatabase
 
-import os, pathlib, shutil
+import os, pathlib, shutil, cv2
 
 auth = Blueprint('auth', __name__)
 
@@ -16,6 +16,7 @@ def verify():
     if request.method == 'POST':
         picture1 = request.files['picture1']
         picture2 = request.files['picture2']
+        applyFilter = request.form.get('applyFilter')
         # toScanner = request.form.get('toScanner')
         
         # if toScanner:
@@ -38,7 +39,6 @@ def verify():
 
             # Outline for picture naming
             # userID_PictureNo
-
             picture1_sec = secure_filename(picture1.filename)
             picture2_sec = secure_filename(picture2.filename)
 
@@ -49,12 +49,13 @@ def verify():
                 os.makedirs(UPLOAD_FOLDER + f"{current_user.id}/forg")
                 os.makedirs(UPLOAD_FOLDER + f"{current_user.id}/not sure")
             
+    
             user_folder = UPLOAD_FOLDER + f"{current_user.id}/not sure/"
 
             picture1.save(os.path.join(user_folder, picture1_sec))
             picture2.save(os.path.join(user_folder, picture2_sec))
             
-            verify = SignatureModel(user_folder + picture1_sec, user_folder + picture2_sec)
+            verify = SignatureModel(user_folder + picture1_sec, user_folder + picture2_sec, applyFilter)
             verify.preprocess()
             verify.predict()
             output = verify.output()

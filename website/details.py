@@ -6,7 +6,7 @@ from . import db, UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from .database import UserDatabase, SignDatabase
 from .models import SignatureModel
 
-import os, pathlib, math
+import os, pathlib, math, ast
 
 details = Blueprint('details', __name__)
 
@@ -42,6 +42,9 @@ def changeSignature():
 @details.route('/verifySignature', methods=['POST', 'GET'])
 def verifySignature():
     toVerifySignature = request.files['verifySignature']
+    applyFilter = request.form.get('applyFilter')
+
+    applyFilter = int(applyFilter) == 1    
     ext_toVerifySignature = pathlib.Path(toVerifySignature.filename).suffix
 
     if not toVerifySignature: # If the user didnt uploaded the subjected signature
@@ -57,7 +60,7 @@ def verifySignature():
         picture1 = userSignature.signature
         picture2 = toVerifySignature_sec
         
-        verify = SignatureModel(UPLOAD_FOLDER + f"{current_user.id}/" + picture1, user_folder + picture2)
+        verify = SignatureModel(UPLOAD_FOLDER + f"{current_user.id}/" + picture1, user_folder + picture2, applyFilter)
         verify.preprocess()
         verify.predict()
         output = verify.output()

@@ -2,9 +2,9 @@ import cv2
 import tensorflow as tf
 
 from keras import layers
-from keras import Input
 from keras import regularizers
 
+from skimage.filters import threshold_local
 
 SIZE = 128
 
@@ -49,9 +49,10 @@ def architecture(weights):
     return siamese
     
 class SignatureModel:
-    def __init__(self, picture1, picture2):
+    def __init__(self, picture1, picture2, applyFilter):
         self.picture1 = picture1
         self.picture2 = picture2
+        self.applyFilter = applyFilter
 
         self.result = ""
         self.percentage = ""
@@ -65,6 +66,17 @@ class SignatureModel:
 
         self.picture2 = cv2.imread(self.picture2, cv2.IMREAD_GRAYSCALE)
         self.picture2 = cv2.resize(self.picture2, (SIZE, SIZE))
+
+        if self.applyFilter:
+            t1 = threshold_local(self.picture1, 11, offset = 10, method = "gaussian")
+            self.picture1 = (self.picture1 > t1).astype("uint8") * 255
+
+            t2 = threshold_local(self.picture1, 11, offset = 10, method = "gaussian")
+            self.picture2 = (self.picture2 > t2).astype("uint8") * 255
+
+            print("Filter is applied")
+        else:
+            print("Filter is not applied")
     
     # Comparing the two pictures if they are similar in terms of similarities in signature
     # It will use the json model from the custom machine learning model made from the verificator folder

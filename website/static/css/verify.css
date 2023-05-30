@@ -13,6 +13,10 @@
     width: 85%;
 }
 
+#applyFilter {
+    accent-color: #CC3271
+}
+
 .form-control::file-selector-button, .btn {
     color: white;
     background-color: #88214B;

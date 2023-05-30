@@ -126,8 +126,11 @@ $(document).ready(function () {
         let verifySignatureInput = $("#verifySignatureInput")[0];
         let verifySignature = verifySignatureInput.files[0];
 
+        let applyFilter = $("#applyFilter").prop("checked")
+
         let formData = new FormData();
         formData.append('verifySignature', verifySignature)
+        formData.append('applyFilter', Number(applyFilter))
 
         $.ajax({
             type: "POST",

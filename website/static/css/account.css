@@ -37,6 +37,10 @@ th {
     background-color: #88214B;
 }
 
+#applyFilter {
+    accent-color: #CC3271
+}
+
 #userInformation, #signatureCategory {
     font-family: '../static/fonts/Poppins-Black.ttf';
     color: #CC3271
